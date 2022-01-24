@@ -151,10 +151,11 @@ Returns: dict mapping strs to ints
 def aminoAcidDictionary(aaList):
     aminoAcidDict={}
     for aminoAcid in aaList:
-        if aminoAcid in aminoAcidDict:
-            aminoAcidDict[aminoAcid]+=1
-        else:
-            aminoAcidDict[aminoAcid]=1
+            if aminoAcid in aminoAcidDict:
+                aminoAcidDict[aminoAcid]+=1
+            else:
+                aminoAcidDict[aminoAcid]=1
+
     return aminoAcidDict
 
 
@@ -165,7 +166,35 @@ Parameters: 2D list of strs ; 2D list of strs ; float
 Returns: 2D list of values
 '''
 def findAminoAcidDifferences(proteinList1, proteinList2, cutoff):
-    return
+    result=[]
+    proteins1=combineProteins(proteinList1)
+    proteins2=combineProteins(proteinList2)
+    aminoDict1=aminoAcidDictionary(proteins1)
+    aminoDict2=aminoAcidDictionary(proteins2)
+    count1=len(proteins1)
+    count2=len(proteins2)
+    for amino in aminoDict1:
+        if amino not in aminoDict2:
+            aminoDict2[amino]=0.0
+        aminoDict1[amino]/=count1
+            
+    for amino in aminoDict2:
+        if amino not in aminoDict1:
+            aminoDict1[amino]=0.0
+        aminoDict2[amino]/=count2  
+            
+    
+    for aminoAcid in aminoDict1:
+        if aminoAcid not in["Start","Stop"]:
+                freq1= aminoDict1[aminoAcid]
+                freq2= aminoDict2[aminoAcid]
+                if abs(freq1-freq2)> cutoff:
+                    temp=[]
+                    temp.append(aminoAcid)
+                    temp.append(freq1)
+                    temp.append(freq2)
+                    result.append(temp)
+    return result
 
 
 '''
@@ -251,10 +280,11 @@ if __name__ == "__main__":
 
     ## Uncomment these for Week 2 ##
    
-    print("\n" + "#"*15 + " WEEK 2 TESTS " +  "#" * 16 + "\n")
-    test.week2Tests()
-    print("\n" + "#"*15 + " WEEK 2 OUTPUT " + "#" * 15 + "\n")
-    runWeek2()
+    # print("\n" + "#"*15 + " WEEK 2 TESTS " +  "#" * 16 + "\n")
+    # test.week2Tests()
+    # print("\n" + "#"*15 + " WEEK 2 OUTPUT " + "#" * 15 + "\n")
+    # runWeek2()
+    test.testFindAminoAcidDifferences()
     
 
     ## Uncomment these for Week 3 ##
